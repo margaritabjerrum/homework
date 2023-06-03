@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  background-color: #eee;
+}
+
+*,
+:after,
+:before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-type: none;
+  text-decoration: none;
+}
