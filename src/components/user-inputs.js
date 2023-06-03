@@ -6,9 +6,28 @@ import lt from 'date-fns/locale/lt';
 
 const UserInputs = () => {
   const [selectedDate, setSelectedDate] = React.useState(null);
-  console.log(selectedDate)
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    
+    const hoursRequired = formData.get('hoursRequired');
+    const busyTime = formData.get('busyTime');
+    const restTime = formData.get('restTime');
+
+    const userInputData = {
+      hoursRequired,
+      selectedDate,
+      busyTime,
+      restTime
+    }
+
+    console.log(userInputData)
+  }
+
   return (
-    <Box component="form" mt={4} mx='auto' width='300px'>
+    <Box component="form" mt={4} mx='auto' width='300px' onSubmit={handleSubmit}>
       <TextField fullWidth
           label="Total hours required"
           name="hoursRequired"
@@ -48,6 +67,7 @@ const UserInputs = () => {
           sx={{mb: 2}}
         />
         <Button 
+          type='submit'
           variant="contained"
           fullWidth
         >
