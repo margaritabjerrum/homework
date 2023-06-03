@@ -3,15 +3,19 @@ import { Box, Button, InputAdornment, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import lt from 'date-fns/locale/lt';
+import { useDispatch } from 'react-redux';
+import { setUserInputData } from '../features/user-data';
 
 const UserInputs = () => {
   const [selectedDate, setSelectedDate] = React.useState(null);
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    
+
     const hoursRequired = formData.get('hoursRequired');
     const busyTime = formData.get('busyTime');
     const restTime = formData.get('restTime');
@@ -22,7 +26,7 @@ const UserInputs = () => {
       busyTime,
       restTime
     }
-
+    dispatch(setUserInputData(userInputData));
     console.log(userInputData)
   }
 
