@@ -21,58 +21,58 @@ const UserInputs = () => {
     const restTime = formData.get('restTime');
 
     const userInputData = {
-      hoursRequired,
+      hoursRequired: Number(hoursRequired),
       selectedDate,
-      busyTime,
-      restTime
+      busyTime: Number(busyTime),
+      restTime: Number(restTime)
     }
     dispatch(setUserInputData(userInputData));
     console.log(userInputData)
   }
 
   return (
-    <Box component="form" mt={4} mx='auto' width='300px' onSubmit={handleSubmit}>
-      <TextField fullWidth
-          label="Total hours required"
-          name="hoursRequired"
-          variant="outlined"
+    <Box component='form' mt={4} mx='auto' width='300px' onSubmit={handleSubmit}>
+      <TextField fullWidth required
+          label='Total hours required'
+          name='hoursRequired'
+          variant='outlined'
           InputProps={{
-            endAdornment: <InputAdornment position="end">hr</InputAdornment>,
+            endAdornment: <InputAdornment position='end'>hr</InputAdornment>,
           }}
           sx={{mb: 2}}
         />
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={lt}>
           <DatePicker
-              label="Select deadline"
+              label='Select deadline'
               value={selectedDate}
               onChange={(newValue) => {
                 setSelectedDate(newValue);
               }}
-              slotProps={{ textField: { variant: 'outlined', fullWidth: true } }}
+              slotProps={{ textField: { variant: 'outlined', fullWidth: true, required: true } }}
               sx={{mb: 2}}
             />
         </LocalizationProvider>
-        <TextField fullWidth
-          label="Default busy time value"
-          name="busyTime"
-          variant="outlined"
+        <TextField fullWidth required
+          label='Default busy time value'
+          name='busyTime'
+          variant='outlined'
           InputProps={{
-            endAdornment: <InputAdornment position="end">hr</InputAdornment>,
+            endAdornment: <InputAdornment position='end'>hr</InputAdornment>,
           }}
           sx={{mb: 2}}
         />
-        <TextField fullWidth
-          label="Rest time"
-          name="restTime"
-          variant="outlined"
+        <TextField fullWidth required
+          label='Rest time'
+          name='restTime'
+          variant='outlined'
           InputProps={{
-            endAdornment: <InputAdornment position="end">hr</InputAdornment>,
+            endAdornment: <InputAdornment position='end'>hr</InputAdornment>,
           }}
           sx={{mb: 2}}
         />
         <Button 
           type='submit'
-          variant="contained"
+          variant='contained'
           fullWidth
         >
           Create Timeline
