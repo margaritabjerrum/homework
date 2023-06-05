@@ -1,13 +1,13 @@
 import React from 'react';
 import { Box, Button, InputAdornment, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import {  DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import lt from 'date-fns/locale/lt';
 import { useDispatch } from 'react-redux';
 import { setUserInputData } from '../features/user-data';
 
 const UserInputs = () => {
-  const [selectedDate, setSelectedDate] = React.useState(null);
+  const [selectedDateTime, setSelectedDateTime] = React.useState(null);
 
   const dispatch = useDispatch();
 
@@ -22,12 +22,11 @@ const UserInputs = () => {
 
     const userInputData = {
       hoursRequired: Number(hoursRequired),
-      selectedDate,
+      selectedDate: selectedDateTime,
       busyTime: Number(busyTime),
       restTime: Number(restTime)
     }
     dispatch(setUserInputData(userInputData));
-    // console.log(userInputData)
   }
 
   return (
@@ -39,17 +38,18 @@ const UserInputs = () => {
           InputProps={{
             endAdornment: <InputAdornment position='end'>hr</InputAdornment>,
           }}
-          sx={{mb: 2}}
+          sx={{mb: 2, backgroundColor: '#FFFFFF'}}
         />
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={lt}>
-          <DatePicker
+          <DateTimePicker
+              orientation='landscape'
               label='Select deadline'
-              value={selectedDate}
+              value={selectedDateTime}
               onChange={(newValue) => {
-                setSelectedDate(newValue);
+                setSelectedDateTime(newValue);
               }}
               slotProps={{ textField: { variant: 'outlined', fullWidth: true, required: true } }}
-              sx={{mb: 2}}
+              sx={{mb: 2, backgroundColor: '#FFFFFF'}}
             />
         </LocalizationProvider>
         <TextField fullWidth required
@@ -59,7 +59,7 @@ const UserInputs = () => {
           InputProps={{
             endAdornment: <InputAdornment position='end'>hr</InputAdornment>,
           }}
-          sx={{mb: 2}}
+          sx={{mb: 2, backgroundColor: '#FFFFFF'}}
         />
         <TextField fullWidth required
           label='Rest time'
@@ -68,7 +68,7 @@ const UserInputs = () => {
           InputProps={{
             endAdornment: <InputAdornment position='end'>hr</InputAdornment>,
           }}
-          sx={{mb: 2}}
+          sx={{mb: 2, backgroundColor: '#FFFFFF'}}
         />
         <Button 
           type='submit'
