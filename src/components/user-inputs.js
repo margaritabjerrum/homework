@@ -27,7 +27,7 @@ const UserInputs = () => {
       restTime: Number(restTime)
     }
     dispatch(setUserInputData(userInputData));
-    console.log(userInputData)
+    // console.log(userInputData)
   }
 
   return (

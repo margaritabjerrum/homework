@@ -2,7 +2,7 @@ import './app.css';
 import Header from './components/header';
 import UserInputs from './components/user-inputs';
 import { useSelector } from 'react-redux';
-import DataGridPage from './components/data-grid-page';
+import DataGridTable from './components/data-grid-table';
 
 function App() {
   const userInput = useSelector((state) => state.userData.value.userInputData)
@@ -10,7 +10,7 @@ function App() {
     <>
       <Header />
       <UserInputs />
-      {userInput && <DataGridPage />}
+      {userInput && <DataGridTable />}
     </>
   );
 }
