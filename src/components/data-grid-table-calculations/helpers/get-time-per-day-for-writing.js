@@ -7,10 +7,10 @@ export const getTimePerDayForWriting = (
   ) => {
   const timeAvailable = (24 - restTime - busyTime) * daysToDeadline;
   if (timeAvailable > hoursRequired) {
-    setIsEnoughTime(true);
+    setIsEnoughTime('yes');
     return Number((hoursRequired / daysToDeadline)).toFixed(2)
   } else {
-    setIsEnoughTime(false);
-    return 0;
+    setIsEnoughTime('no');
+    return '-';
   }
 }
