@@ -7,8 +7,13 @@ import { populateTableData } from './data-grid-table-calculations/populate-table
 const DataGridTable = () => {
 
   const userInput = useSelector((state) => state.userData.value.userInputData);
+  const [rows, setRows] = React.useState([]);
+  const [isEnoughTime, setIsEnoughTime] = React.useState(null);
 
-  const rows = populateTableData(userInput);
+  React.useEffect(() => {
+    const predefinedRows = populateTableData(userInput, setIsEnoughTime);
+    setRows(predefinedRows);
+  }, [userInput]);
 
   const columns = [
     { field: 'col1', headerName: 'Date', width: 150 },

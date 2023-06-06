@@ -1,29 +1,31 @@
-import { addDays, differenceInCalendarDays  } from 'date-fns';
+import { addDays, differenceInCalendarDays } from 'date-fns';
+import { formatDate } from './helpers/format-date';
+import { getWeekdayName } from './helpers/get-weekday-name';
+import { getTimePerDayForWriting } from './helpers/get-time-per-day-for-writing';
 
-export const populateTableData = (userInput) => {
+export const populateTableData = (userInput, setIsEnoughTime) => {
   const today = new Date();
 
   const deadline = userInput.selectedDate;
   
-  const daysToDeadline = differenceInCalendarDays(deadline, today)
-  console.log(daysToDeadline);
+  const daysToDeadline = differenceInCalendarDays(deadline, today);
 
-  const avgTimePerDayRequired = Number((userInput.hoursRequired / daysToDeadline)).toFixed(2)
-  
   let rows = [];
-  for (let i = 0; i <= daysToDeadline; i++) {
+  for (let i = 1; i <= daysToDeadline; i++) {
     let newDate = addDays(today, i)
     rows.push({
       id: i,
-      col1: newDate.toLocaleDateString(undefined, {
-        day:   'numeric',
-        month: 'numeric',
-        year:  'numeric',
-    }),
-      col2: newDate.getDay(),
+      col1: formatDate(newDate),
+      col2: getWeekdayName(newDate),
       col3: userInput.restTime,
       col4: userInput.busyTime,
-      col5: avgTimePerDayRequired
+      col5: getTimePerDayForWriting(
+        userInput.hoursRequired, 
+        userInput.restTime, 
+        userInput.busyTime, 
+        daysToDeadline,
+        setIsEnoughTime
+        )
     })    
   }
 
