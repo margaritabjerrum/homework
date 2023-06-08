@@ -1,20 +1,17 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Alert, AlertTitle, Box } from '@mui/material';
+import { Alert, AlertTitle, Box, Snackbar } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { populateTableData } from './data-grid-table-calculations/populate-table-data';
 import { differenceInCalendarDays } from 'date-fns';
+import { updateSchedule } from './data-grid-table-calculations/update-schedule';
 
 const DataGridTable = () => {
 
   const userInput = useSelector((state) => state.userData.value.userInputData);
   const [rows, setRows] = React.useState([]);
   const [isEnoughTime, setIsEnoughTime] = React.useState('');
-
-  React.useEffect(() => {
-    const predefinedRows = populateTableData(userInput, setIsEnoughTime);
-    setRows(predefinedRows);
-  }, [userInput]);
+  const [error, setError] = React.useState(false);
 
   const today = new Date();
 
@@ -22,79 +19,23 @@ const DataGridTable = () => {
   
   const daysToDeadline = differenceInCalendarDays(deadline, today);
 
+  React.useEffect(() => {
+    const predefinedRows = populateTableData(userInput, setIsEnoughTime);
+    setRows(predefinedRows);
+  }, [userInput]);
+
   const processRowUpdate = (newRow, oldRow) => {
     setRows((prevRows) => {
       const newRows = [...prevRows].map((row) => {
         if (row.id === newRow.id && (newRow.col3 + newRow.col4) > 24) {
-          console.log('too many hours in a day')
+          setError(true);
           return oldRow;
         }
         if (row.id === newRow.id) return newRow;
         return row;
       });
 
-      let totalAvailableTime = 0;
-      newRows.forEach((row) => {
-        totalAvailableTime += 24 - (row.col3 + row.col4)
-      })
-      
-      if(totalAvailableTime >= userInput.hoursRequired) {
-        setIsEnoughTime('yes');
-        
-        let avgWritingTime = userInput.hoursRequired / daysToDeadline;
-
-        let allDaysFitAverage = true;
-        newRows.forEach((row) => {
-          const availableTimeInTheDay = 24 - (row.col3 + row.col4);
-            if (availableTimeInTheDay - avgWritingTime < 0) {
-              allDaysFitAverage = false;
-            }
-        });
-
-        let hoursAssigned = 0;
-        let daysCalculated = 0
-
-        newRows.forEach((row) => {
-          const availableTimeInTheDay = 24 - (row.col3 + row.col4);
-          if (allDaysFitAverage) {
-            row.col5 = avgWritingTime.toFixed(2);
-            hoursAssigned += Number(row.col5);
-            return;
-          }
-  
-          if (avgWritingTime >= availableTimeInTheDay) {
-            row.col5 = availableTimeInTheDay.toFixed(2);
-            hoursAssigned += Number(row.col5);
-            daysCalculated += 1;
-  
-          } else if (totalAvailableTime === userInput.hoursRequired) {
-            row.col5 = availableTimeInTheDay.toFixed(2);
-            hoursAssigned += Number(row.col5);
-            daysCalculated += 1;
-              
-          } else {
-            row.col5 = Number(((userInput.hoursRequired - hoursAssigned) / (daysToDeadline - daysCalculated)).toFixed(2));
-            hoursAssigned += Number(row.col5);
-            daysCalculated += 1;
-          }
-
-        })
-
-        if (hoursAssigned + 0.1 < userInput.hoursRequired) {
-          newRows.forEach((row) => {
-            if((24 - (row.col3 + row.col4)) > row.col5) {
-              row.col5 += Number((userInput.hoursRequired - hoursAssigned).toFixed(2));
-              hoursAssigned += userInput.hoursRequired - hoursAssigned;
-            }
-          })
-        }
-
-        } else {
-          setIsEnoughTime('no');
-          newRows.forEach((row) => {
-            row.col5 = '-';
-          })        
-        }     
+      updateSchedule(newRows, userInput, setIsEnoughTime, daysToDeadline);
 
       return newRows;
     });
@@ -110,6 +51,7 @@ const DataGridTable = () => {
     { field: 'col5', headerName: 'Hours To Write', width: 150, align: 'right', type: 'string' },
   ];
   return (
+    <>
     <Box component='div' sx={{ height: 475, width: '80%', mt: 2, mx: 'auto'}}>
       {isEnoughTime && <Alert 
         sx={{ mb: 2}}
@@ -137,6 +79,20 @@ const DataGridTable = () => {
         }}
       />
     </Box>
+      <Snackbar
+        open={error}
+        autoHideDuration={4000}
+        onClose={() => setError(false)}
+      > 
+        <Alert 
+          onClose={() => setError(false)} 
+          severity='error' 
+          sx={{ width: '100%' }}
+        >
+          You can not enter more than 24 hours.
+        </Alert>
+      </Snackbar>
+    </>
   )
 }
 
