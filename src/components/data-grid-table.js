@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Alert, AlertTitle, Box, Snackbar } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { populateTableData } from './data-grid-table-calculations/populate-table-data';
-import { differenceInCalendarDays } from 'date-fns';
+import { differenceInCalendarDays, differenceInBusinessDays } from 'date-fns';
 import { updateSchedule } from './data-grid-table-calculations/update-schedule';
 
 const DataGridTable = () => {
@@ -17,7 +17,12 @@ const DataGridTable = () => {
 
   const deadline = userInput.selectedDate;
   
-  const daysToDeadline = differenceInCalendarDays(deadline, today);
+  let daysToDeadline;
+  if(userInput.freeWeekends) {
+    daysToDeadline = differenceInBusinessDays(deadline, today);
+  } else {
+    daysToDeadline = differenceInCalendarDays(deadline, today);
+  }
 
   React.useEffect(() => {
     const predefinedRows = populateTableData(userInput, setIsEnoughTime);

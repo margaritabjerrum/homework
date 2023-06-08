@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, InputAdornment, TextField } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, InputAdornment, TextField } from '@mui/material';
 import {  DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import lt from 'date-fns/locale/lt';
@@ -8,6 +8,7 @@ import { setUserInputData } from '../features/user-data';
 
 const UserInputs = () => {
   const [selectedDateTime, setSelectedDateTime] = React.useState(null);
+  const [freeWeekends, setFreeWeekends] = React.useState(false);
 
   const dispatch = useDispatch();
 
@@ -24,7 +25,8 @@ const UserInputs = () => {
       hoursRequired: Number(hoursRequired),
       selectedDate: selectedDateTime,
       busyTime: Number(busyTime),
-      restTime: Number(restTime)
+      restTime: Number(restTime),
+      freeWeekends,
     }
     dispatch(setUserInputData(userInputData));
   }
@@ -68,8 +70,14 @@ const UserInputs = () => {
           InputProps={{
             endAdornment: <InputAdornment position='end'>hr</InputAdornment>,
           }}
-          sx={{mb: 2, backgroundColor: '#FFFFFF'}}
+          sx={{mb: 1, backgroundColor: '#FFFFFF'}}
         />
+        <Box sx={{mb: 1}}>
+          <FormControlLabel
+              label='I want to have free weekends'
+              control={<Checkbox size='medium' onChange={() => setFreeWeekends(!freeWeekends)} />}
+          />
+        </Box>
         <Button 
           type='submit'
           variant='contained'
