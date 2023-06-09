@@ -1,4 +1,4 @@
-# Spreadsheet Evaluator
+# Timeline builder
 
 ## System requirements
 [Node.js](https://nodejs.org/en/) v16 or later
