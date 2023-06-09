@@ -2,7 +2,6 @@ import { addDays, differenceInBusinessDays, differenceInCalendarDays } from 'dat
 import { formatDate } from './helpers/format-date';
 import { getWeekdayName } from './helpers/get-weekday-name';
 import { getTimePerDayForWriting } from './helpers/get-time-per-day-for-writing';
-import { formatHoursMinutes } from './helpers/format-hours-minutes';
 
 export const populateTableData = (userInput, setIsEnoughTime) => {
 
@@ -42,10 +41,6 @@ export const populateTableData = (userInput, setIsEnoughTime) => {
           )
       })
     }
-  }
-
-  if(rows[0].col5 !== '-') {
-    formatHoursMinutes(rows);
   }
 
   return rows;

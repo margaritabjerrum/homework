@@ -1,5 +1,3 @@
-import { formatHoursMinutes } from './helpers/format-hours-minutes';
-
 export const updateSchedule = (newRows, userInput, setIsEnoughTime, daysToDeadline) => {
   let totalAvailableTime = 0;
   newRows.forEach((row) => {
@@ -54,15 +52,12 @@ export const updateSchedule = (newRows, userInput, setIsEnoughTime, daysToDeadli
       })
     }
 
-    formatHoursMinutes(newRows);
-
   } else {
     setIsEnoughTime('no');
     newRows.forEach((row) => {
       row.col5 = '-';
     })
   }
-
 
   return newRows;
 }

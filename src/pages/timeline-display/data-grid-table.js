@@ -2,6 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import React from 'react';
 
 const DataGridTable = ({rows, columns, processRowUpdate}) => {
+
   return (
     <DataGrid
     rows={rows}

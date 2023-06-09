@@ -7,6 +7,7 @@ import { updateSchedule } from './data-grid-table-calculations/update-schedule';
 import WillCompleteAlert from './will-complete-alert';
 import SnackbarAlert from './snackbar-alert';
 import DataGridTable from './data-grid-table';
+import { formatHoursMinutes } from './data-grid-table-calculations/helpers/format-hours-minutes';
 
 const TimelineDisplay = () => {
 
@@ -14,7 +15,6 @@ const TimelineDisplay = () => {
   const [rows, setRows] = React.useState([]);
   const [isEnoughTime, setIsEnoughTime] = React.useState('');
   const [error, setError] = React.useState(false);
-
   const today = new Date();
 
   const deadline = userInput.selectedDate;
@@ -49,6 +49,9 @@ const TimelineDisplay = () => {
 
     return newRow;
   };
+  
+  let rowsToFormat = JSON.parse(JSON.stringify(rows));
+  let formatedRows = formatHoursMinutes(rowsToFormat);
 
   const columns = [
     { field: 'col1', headerName: 'Date', width: 150 },
@@ -65,7 +68,7 @@ const TimelineDisplay = () => {
           setIsEnoughTime={setIsEnoughTime}
         />
         <DataGridTable 
-            rows={rows}
+            rows={formatedRows}
             columns={columns}
             processRowUpdate={processRowUpdate}
         />
