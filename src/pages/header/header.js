@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <Stack alignItems='center' gap={1} mt={2}>
       <CalendarMonthIcon color='primary' sx={{ fontSize: 60 }} />
-      <Typography variant='h2'>Timeline builder</Typography>
+      <Typography component='h1' variant='h2'>Timeline builder</Typography>
     </Stack>
   )
 }

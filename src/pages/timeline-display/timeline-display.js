@@ -1,12 +1,14 @@
 import React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { Alert, AlertTitle, Box, Snackbar } from '@mui/material';
+import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { populateTableData } from './data-grid-table-calculations/populate-table-data';
 import { differenceInCalendarDays, differenceInBusinessDays } from 'date-fns';
 import { updateSchedule } from './data-grid-table-calculations/update-schedule';
+import WillCompleteAlert from './will-complete-alert';
+import SnackbarAlert from './snackbar-alert';
+import DataGridTable from './data-grid-table';
 
-const DataGridTable = () => {
+const TimelineDisplay = () => {
 
   const userInput = useSelector((state) => state.userData.value.userInputData);
   const [rows, setRows] = React.useState([]);
@@ -16,9 +18,9 @@ const DataGridTable = () => {
   const today = new Date();
 
   const deadline = userInput.selectedDate;
-  
+
   let daysToDeadline;
-  if(userInput.freeWeekends) {
+  if (userInput.freeWeekends) {
     daysToDeadline = differenceInBusinessDays(deadline, today);
   } else {
     daysToDeadline = differenceInCalendarDays(deadline, today);
@@ -57,48 +59,20 @@ const DataGridTable = () => {
   ];
   return (
     <>
-    <Box component='div' sx={{ height: 475, width: '80%', mt: 2, mx: 'auto'}}>
-      {isEnoughTime && <Alert 
-        sx={{ mb: 2}}
-        variant="filled"
-        severity={isEnoughTime === 'yes' ? 'success' : 'error'} 
-        onClose={() => setIsEnoughTime('')}
-      >
-        <AlertTitle>{isEnoughTime === 'yes' 
-          ? 'You can finish on time' 
-          : 'You do not have enough time to finish'} 
-        </AlertTitle>
-        {isEnoughTime === 'yes' 
-          ? 'See your schedule below. You can edit Rest Time and Busy Time values to customize your schedule.' 
-          : 'Try entering different default parameters or edit schedule below to see if you can still make it.'} 
-      </Alert>}
-      <DataGrid 
-        rows={rows} 
-        columns={columns} 
-        processRowUpdate={processRowUpdate}
-        pageSizeOptions={[7, 14, 21, 28]}
-        initialState={{
-          pagination: {
-            paginationModel: { pageSize: 7, page: 0 },
-          },
-        }}
-      />
-    </Box>
-      <Snackbar
-        open={error}
-        autoHideDuration={4000}
-        onClose={() => setError(false)}
-      > 
-        <Alert 
-          onClose={() => setError(false)} 
-          severity='error' 
-          sx={{ width: '100%' }}
-        >
-          You can not enter more than 24 hours.
-        </Alert>
-      </Snackbar>
+      <Box component='div' sx={{ height: 475, width: '80%', mt: 2, mx: 'auto' }}>
+        <WillCompleteAlert
+          isEnoughTime={isEnoughTime}
+          setIsEnoughTime={setIsEnoughTime}
+        />
+        <DataGridTable 
+            rows={rows}
+            columns={columns}
+            processRowUpdate={processRowUpdate}
+        />
+      </Box>
+      <SnackbarAlert error={error} setError={setError} />
     </>
   )
 }
 
-export default DataGridTable;
+export default TimelineDisplay;

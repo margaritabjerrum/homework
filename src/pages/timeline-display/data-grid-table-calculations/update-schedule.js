@@ -1,4 +1,4 @@
-import { formatHoursMinutes } from "./helpers/format-hours-minutes";
+import { formatHoursMinutes } from './helpers/format-hours-minutes';
 
 export const updateSchedule = (newRows, userInput, setIsEnoughTime, daysToDeadline) => {
   let totalAvailableTime = 0;

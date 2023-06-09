@@ -43,7 +43,10 @@ export const populateTableData = (userInput, setIsEnoughTime) => {
       })
     }
   }
-  formatHoursMinutes(rows);
+
+  if(rows[0].col5 !== '-') {
+    formatHoursMinutes(rows);
+  }
 
   return rows;
 }
